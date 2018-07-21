@@ -1,0 +1,88 @@
+Beskrivelse
+
+ 
+
+Dere skal implementere en server og en klient i Java. Serveren skal gi informasjon om tid og dato til klienten, i et format som klienten kan velge. De skal kommunisere ved hjelp av en TCP-forbindelse.
+
+ 
+
+Klienten skal kunne sende meldingene «FULL», «DATE», «TIME» eller «CLOSE» til serveren.
+Serveren skal respondere på disse meldingene på denne måten:
+«FULL»: Sender en datostreng på formen februar 2017 17:15:16 til klienten
+«DATE»: Sender en datostreng på formen februar 2017 til klienten
+«TIME»: Sender en datostreng på formen 17:15:16 til klienten
+«CLOSE»: Sender en beskjed til klienten om at forbindelsen kobles ned, og kobler deretter ned forbindelsen.
+ 
+
+Teknisk hjelp og hint:
+
+ 
+
+Se https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.htmlhttps://docs.oracle.com/javase/8/docs/api/java/net/Socket.html
+            eller forelesningsnotater for 3. februar.
+
+ 
+
+Datostrengene kan være på det språket som DateFormat -metodene returnerer. Se
+http://docs.oracle.com/javase/8/docs/api/java/text/DateFormat.html
+
+Du kan få bruk for å lage en multitrådet server som kan håndtere flere samtidige klienter. En tråd er en utføringstråd (thread of execution) i Java. Java Virtual Machine tillater en applikasjon å starte flere samtidige tråder som utføres parallelt. Dette er nødvendig når en applikasjon skal utføre flere operasjoner samtidig. Husk at en lese-operasjon i Java (enten det gjelder lesing fra tastatur eller fra en socket) innebærer at tråden som utfører denne operasjonen må vente passivt. Ved å ha flere tråder, kan man ha en tråd som er ansvarlig for å lese samtidig som andre tråder kan utføre nyttig arbeid. Se
+
+https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html
+
+Se også
+
+https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html
+En tråd startes ved å bruke metoden start(). En tråd må ha metoden run(),  og operasjonene tråden skal utføre defineres i denne metoden. En tråd er død når den er ferdig med sin run()-metode.
+
+ 
+
+Eksempel:
+
+ClientProcessor.java
+
+public class ClientProcessor implements Runnable{
+
+public ClientProcessor (){//constructor     
+
+  } // constructor()
+
+public void run(){// different executions
+
+            } // run()
+
+}
+
+Hovedprogram.java:
+
+public class Hovedprogram {
+
+           public static void main(String[] args) {
+
+               Thread thread =
+
+new Thread(ClientProcessor ());
+
+                    thread.start();
+
+            } // main()
+
+}
+
+Det er morsomst å kjøre server og klienter på forskjellige maskiner. Hvis du ikke har tilgang på flere maskiner, eller dersom du har tilgang på flere maskiner men kommunikasjonen stoppes av brannmurer eller andre tekniske forhold, eller for testformål, kan du kjøre server og klienter på samme maskin. Du kan da bruke IP-adressen «127.0.0.1» som navn på maskinen, når klientprosessen skal referere til serveren.
+Trådprogrammering kan være en kilde til stor frustrasjon hvis vi ikke gjør det veldig enkelt. Spesielt er synkronisering av tråder vanskelig, og i denne oppgaven er det meningen å unngå å gjøre dette. Derfor er det lurt å la klienttrådene sove i 1 ms ved å bruke metodekallet Thread.currentThread().sleep(1000); i begynnelsen og slutten av klientens run()-
+Når klientene sender data til serveren ved hjelp av et DataOutputStream-objekt, kan det av og til være nødvendig å bruke DataOutputStream-metoden flush() for å få sendt alt som ligger i bufferen.
+Oppretting av Socketer er operasjoner som kan gå feil. Hvis du ber om et portnummer som er i bruk vil du for eksempel få en feil. Bruk try/catch for å fange opp slike feil.
+Husk å close() alle TCP-forbindelser når du er ferdig med å bruke dem.
+ 
+
+Oppgaver (gjør 1 og 2).
+
+ 
+
+Skriv Javakoden for serveren. Serveren skal kunne håndtere flere klienter samtidig, om nødvendig. For å teste at dette virker kan du starte klientene dine som parallelle tråder. Java og klient skal kommunisere over TCP-forbindelser. Serveren skal skrive ut (på standard utputt) alle innkommende meldinger fra klientene. Denne utskriften skal inneholde en identifikasjon av klienten for hver melding, og innhold av melding. Serveren skal også skrive ut alle utgående meldinger, inkludert ID på mottakerklient og den tilsvarende meldingen.
+Skriv Javakoden for klienten. På samme måte som serveren, skal også klientene skrive ut alle innkommende og utgående meldinger.
+ 
+
+Du kan se bort fra klient/tjener autentisering og andre sikkerhetsrelaterte aspekter.
+
